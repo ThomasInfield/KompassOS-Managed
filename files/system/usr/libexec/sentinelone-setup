@@ -4,9 +4,12 @@ set -euo pipefail
 S1_USR=/usr/lib/opt/sentinelone
 S1_VAR=/var/sentinelone
 
-for dir in configuration log crash_dumps assets .storage lib; do
-    src="$S1_USR/$dir"
-    dst="$S1_VAR/$dir"
-    [ -d "$src" ] && [ -d "$dst" ] || continue
-    mountpoint -q "$src" || mount --bind "$dst" "$src"
-done
+# Create sentinelone system user on first boot (skipped at build time via --noscripts)
+if ! id sentinelone &>/dev/null; then
+    groupadd -r sentinelone
+    useradd -r -g sentinelone -d "${S1_USR}/home" -s /usr/sbin/nologin sentinelone
+    chown -R sentinelone:sentinelone "${S1_VAR}"
+fi
+
+# Bind mount writable /var directory over read-only /usr
+mountpoint -q "$S1_USR" || mount --bind "$S1_VAR" "$S1_USR"
