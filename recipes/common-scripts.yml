@@ -5,4 +5,6 @@ modules:
   - type: script
     snippets:
       - dnf install --setopt=tsflags=noscripts -y https://github.com/ThomasInfield/KompassOS-Managed/releases/download/v25.4.1.24/SentinelAgent_linux_x86_64_v25_4_1_24.rpm
-      - systemctl enable sentinelagent || true
+      - install -m 644 /usr/lib/opt/sentinelone/configuration/sentinelone.service /etc/systemd/system/sentinelagent.service
+      - rm /opt/sentinelone && ln -sf /var/opt/sentinelone /opt/sentinelone
+      - systemctl enable sentinelagent
