@@ -1,0 +1,8 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  - type: script
+    snippets:
+      - dnf install --setopt=tsflags=noscripts -y https://github.com/ThomasInfield/KompassOS-Managed/releases/download/v25.4.1.24/SentinelAgent_linux_x86_64_v25_4_1_24.rpm
+      - systemctl enable sentinelagent || true

@@ -1,15 +1,15 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
-name: kompassos-nvidia-managed
+name: kompassos-hwe-managed
 # description will be included in the image's metadata
 description: KompassOS-Managed is a Managed CO-ONE custom image built on top of the KompassOS base image
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/l0g0ff/kompassos-dx-hwe-nvidia
+base-image: ghcr.io/l0g0ff/kompassos-dx-hwe
 image-version: latest # latest is also supported if you want new updates ASAP
 
 modules:
   - from-file: common-files.yml
   - from-file: common-scripts.yml
-  
+
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
