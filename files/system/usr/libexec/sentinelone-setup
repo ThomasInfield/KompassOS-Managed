@@ -4,7 +4,7 @@ set -euo pipefail
 S1_USR=/usr/lib/opt/sentinelone
 S1_VAR=/var/sentinelone
 
-for dir in configuration log crash_dumps assets .storage; do
+for dir in configuration log crash_dumps assets .storage lib; do
     src="$S1_USR/$dir"
     dst="$S1_VAR/$dir"
     [ -d "$src" ] && [ -d "$dst" ] || continue

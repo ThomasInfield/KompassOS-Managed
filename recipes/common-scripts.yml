@@ -5,5 +5,14 @@ modules:
   - type: script
     snippets:
       - dnf install --setopt=tsflags=noscripts -y https://github.com/ThomasInfield/KompassOS-Managed/releases/download/v25.4.1.24/SentinelAgent_linux_x86_64_v25_4_1_24.rpm
+      # Install service file and create sentinelone.service alias (sentinelctl expects this name)
       - install -m 644 /opt/sentinelone/configuration/sentinelone.service /etc/systemd/system/sentinelagent.service
+      - ln -sf /etc/systemd/system/sentinelagent.service /etc/systemd/system/sentinelone.service
+      # Set SERVICE_TYPE so the agent can start (skipped by --noscripts)
+      - python3 -c "import json; f='/opt/sentinelone/configuration/installation_params.json'; d=json.load(open(f)); d['SERVICE_TYPE']='systemd'; json.dump(d,open(f,'w'),indent=4)"
+      # Create sentinelone system user (skipped by --noscripts)
+      - groupadd -r sentinelone || true
+      - useradd -r -g sentinelone -d /opt/sentinelone/home -s /usr/sbin/nologin sentinelone || true
+      # Set ownership on writable directories so the agent can access them as sentinelone user
+      - chown sentinelone:sentinelone /opt/sentinelone/log /opt/sentinelone/crash_dumps /opt/sentinelone/configuration /opt/sentinelone/lib
       - systemctl enable sentinelagent sentinelone-setup
