@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+
+S1_USR=/usr/lib/opt/sentinelone
+S1_VAR=/var/sentinelone
+
+for dir in configuration log crash_dumps assets .storage; do
+    src="$S1_USR/$dir"
+    dst="$S1_VAR/$dir"
+    [ -d "$src" ] && [ -d "$dst" ] || continue
+    mountpoint -q "$src" || mount --bind "$dst" "$src"
+done

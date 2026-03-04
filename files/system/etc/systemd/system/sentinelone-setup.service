@@ -1,0 +1,12 @@
+[Unit]
+Description=Bind mount writable SentinelOne directories from /var
+Before=sentinelagent.service
+After=local-fs.target systemd-tmpfiles-setup.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/sentinelone-setup
+
+[Install]
+WantedBy=multi-user.target
