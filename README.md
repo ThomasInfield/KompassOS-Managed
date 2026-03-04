@@ -48,6 +48,23 @@ systemctl reboot
 
 Your system is now running KompassOS-Managed. The `latest` tag always points to the most recent build and will follow the Fedora version pinned in `recipe.yml`, so you will not be automatically moved to a new major Fedora release.
 
+## Post-installation setup
+
+### SentinelOne
+
+After rebasing, register the SentinelOne agent with your Site or Group Token from the Management Console:
+
+```bash
+just sentinelone-set-token
+```
+
+This will prompt for the token, set it, and immediately start the agent. To check the agent status or version afterwards:
+
+```bash
+just sentinelone-status
+just sentinelone-version
+```
+
 ## Verification
 
 Images are signed with [Sigstore](https://www.sigstore.dev/)'s [cosign](https://github.com/sigstore/cosign). To verify the signature, download the `cosign.pub` file from this repository and run:
