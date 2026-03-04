@@ -8,8 +8,24 @@ S1_VAR=/var/sentinelone
 if ! id sentinelone &>/dev/null; then
     groupadd -r sentinelone
     useradd -r -g sentinelone -d "${S1_USR}/home" -s /usr/sbin/nologin sentinelone
+    # Set ownership matching a reference installation:
+    # most dirs are sentinelone:sentinelone, but bin/ebpfs/home/lib stay root:root
     chown -R sentinelone:sentinelone "${S1_VAR}"
+    chown -R root:root "${S1_VAR}/bin" "${S1_VAR}/ebpfs" "${S1_VAR}/home" "${S1_VAR}/lib" "${S1_VAR}/mount" 2>/dev/null || true
+    # Allow sentinelone group to read/execute bin (needed for sub-processes running as sentinelone)
+    chown -R root:sentinelone "${S1_VAR}/bin"
+    chmod g+r+x "${S1_VAR}/bin"
+    chmod g+r "${S1_VAR}/bin/sentinelone-agent"
 fi
 
 # Bind mount writable /var directory over read-only /usr
 mountpoint -q "$S1_USR" || mount --bind "$S1_VAR" "$S1_USR"
+
+# Fix SELinux context: bin mount source has var_t, but executables need bin_t
+chcon -R -t bin_t "${S1_USR}/bin" "${S1_USR}/ebpfs" 2>/dev/null || true
+
+# Ensure sentinelone.service alias exists (sentinelctl uses this name, not sentinelagent.service)
+if [ ! -e /etc/systemd/system/sentinelone.service ]; then
+    ln -sf /etc/systemd/system/sentinelagent.service /etc/systemd/system/sentinelone.service
+    systemctl daemon-reload
+fi
