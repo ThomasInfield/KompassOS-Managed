@@ -20,24 +20,18 @@ Visit [kompassos.nl](https://www.kompassos.nl/) and follow the installation inst
 
 ### Step 2 — Rebase to KompassOS-Managed
 
-Once you have KompassOS running, open a terminal and run the following commands to rebase to the managed image.
+Once you have KompassOS running, open a terminal and run **one** of the following commands depending on your hardware:
 
-First, rebase to the unsigned image to install the correct signing keys and policies:
+**For systems with an NVIDIA graphics card:**
 
 ```bash
-rpm-ostree rebase ostree-unverified-registry:ghcr.io/thomasinfield/kompassos-managed:latest
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/thomasinfield/kompassos-nvidia-managed:latest
 ```
 
-Reboot to apply the changes:
+**For systems with an Intel or AMD graphics card (HWE):**
 
 ```bash
-systemctl reboot
-```
-
-After rebooting, rebase to the signed image:
-
-```bash
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/thomasinfield/kompassos-managed:latest
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/thomasinfield/kompassos-hwe-managed:latest
 ```
 
 Reboot once more to complete the installation:
