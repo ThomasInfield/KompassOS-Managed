@@ -3,10 +3,6 @@
 
 modules:
   - type: script
-    scripts:
-      - install-intune.sh
-
-  - type: script
     snippets:
       - dnf install --setopt=tsflags=noscripts -y https://github.com/ThomasInfield/KompassOS-Managed/releases/download/managed-deps/SentinelAgent_linux_x86_64_v25_4_1_24.rpm
       # Install service file and create sentinelone.service alias (sentinelctl expects this name)
