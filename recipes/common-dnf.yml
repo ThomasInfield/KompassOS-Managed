@@ -4,15 +4,4 @@
 modules:
   - type: dnf
     install:
-      packages:
-        # java-11-openjdk is required by microsoft-identity-broker but unavailable in
-        # Fedora 43 repositories. Packages sourced from Fedora 41 koji:
-        # https://kojipkgs.fedoraproject.org/packages/java-11-openjdk/11.0.29.0.7/1.fc41/x86_64/
-        - https://github.com/ThomasInfield/KompassOS-Managed/releases/download/managed-deps/java-11-openjdk-headless-11.0.29.0.7-1.fc41.x86_64.rpm
-        - https://github.com/ThomasInfield/KompassOS-Managed/releases/download/managed-deps/java-11-openjdk-11.0.29.0.7-1.fc41.x86_64.rpm
-        - microsoft-identity-broker
-        - intune-portal
-    repos:
-      cleanup: true
-      files:
-        - https://packages.microsoft.com/yumrepos/microsoft-rhel9.0-prod/config.repo
+      packages: []

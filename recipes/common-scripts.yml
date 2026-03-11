@@ -4,6 +4,16 @@
 modules:
   - type: script
     snippets:
+      # Add Microsoft RHEL 9 repository
+      - curl -o /etc/yum.repos.d/microsoft-rhel9-prod.repo https://packages.microsoft.com/yumrepos/microsoft-rhel9.0-prod/config.repo
+      # java-11-openjdk is required by microsoft-identity-broker but unavailable in Fedora 43.
+      # Packages sourced from Fedora 41 koji: https://kojipkgs.fedoraproject.org/packages/java-11-openjdk/11.0.29.0.7/1.fc41/x86_64/
+      # --setopt=install_weak_deps=False skips microsoft-identity-diagnostics, a weak dependency
+      # that has no payload digest and is rejected by RPM 4.19+. Not required for Intune to function.
+      - dnf install -y --setopt=install_weak_deps=False https://github.com/ThomasInfield/KompassOS-Managed/releases/download/managed-deps/java-11-openjdk-headless-11.0.29.0.7-1.fc41.x86_64.rpm https://github.com/ThomasInfield/KompassOS-Managed/releases/download/managed-deps/java-11-openjdk-11.0.29.0.7-1.fc41.x86_64.rpm microsoft-identity-broker intune-portal
+
+  - type: script
+    snippets:
       - dnf install --setopt=tsflags=noscripts -y https://github.com/ThomasInfield/KompassOS-Managed/releases/download/managed-deps/SentinelAgent_linux_x86_64_v25_4_1_24.rpm
       # Install service file and create sentinelone.service alias (sentinelctl expects this name)
       - install -m 644 /opt/sentinelone/configuration/sentinelone.service /etc/systemd/system/sentinelagent.service
