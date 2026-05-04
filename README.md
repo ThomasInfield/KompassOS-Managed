@@ -40,7 +40,7 @@ Reboot once more to complete the installation:
 systemctl reboot
 ```
 
-Your system is now running KompassOS-Managed. The `latest` tag always points to the most recent build and will follow the Fedora version pinned in `recipe.yml`, so you will not be automatically moved to a new major Fedora release.
+Your system is now running KompassOS-Managed. The `latest` tag always points to the most recent build and will follow the Fedora version pinned in `recipe.yml`, so you will not be automatically moved to a new major Fedora release. 
 
 ## Post-installation setup
 
